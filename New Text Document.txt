@@ -1,0 +1,110 @@
+package spicejet;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.Select;
+
+public class ne {
+
+	public static void main(String[] args) throws InterruptedException {
+		
+		ChromeOptions options = new ChromeOptions();
+		
+		options.addArguments("--disable-notifications");
+		
+		WebDriver driver = new ChromeDriver(options);
+		
+		driver.manage().window().maximize();
+		
+		driver.get("https://www.spicejet.com");
+		
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		
+	    String mainWindowHandle = driver.getWindowHandle();
+	    
+		driver.findElement(By.xpath("//div[text()='Signup']")).click();
+
+	    Set<String> allWindowHandles = driver.getWindowHandles();
+	    
+	    for(String handle : allWindowHandles) {
+	    	
+	    	if(!handle.equals(mainWindowHandle)) {
+	    		
+	    		driver.switchTo().window(handle);
+	    		
+	    		break;
+	    	}
+	    }
+			
+		WebElement dropdownElement = driver.findElement(By.xpath("//select[@class='form-control form-select ']"));
+
+		Select dropdown = new Select(dropdownElement);
+		
+		dropdown.selectByVisibleText("Mr");
+		
+		driver.findElement(By.id("first_name")).sendKeys("VINOTH");
+		
+		driver.findElement(By.id("last_name")).sendKeys("KUMAR");
+		
+		WebElement countryElement = driver.findElement(By.xpath("/html/body/div[2]/div/div/div[2]/div[2]/div/div[1]/div[3]/div[1]/select"));
+		
+		Select country = new Select(countryElement);
+		
+		country.selectByVisibleText("India");
+		
+		driver.findElement(By.xpath("//*[@id=\"dobDate\"]")).click();
+		
+		WebElement monthElement = driver.findElement(By.xpath("//*[@id=\"react-root\"]/div/div/div[2]/div[2]/div/div[1]/div[3]/div[2]/div/div[2]/div[2]/div/div/div[2]/div[1]/div[2]/div[1]/select"));
+		
+		Select month = new Select(monthElement);
+		
+		month.selectByVisibleText("February");
+		
+		WebElement yearElement = driver.findElement(By.xpath("//*[@id=\"react-root\"]/div/div/div[2]/div[2]/div/div[1]/div[3]/div[2]/div/div[2]/div[2]/div/div/div[2]/div[1]/div[2]/div[2]/select"));
+		
+		Select year = new Select(yearElement);
+		
+		year.selectByVisibleText("1997");
+		
+		WebElement calendar = driver.findElement(By.xpath("/html/body/div[2]/div/div/div[2]/div[2]/div/div[1]/div[3]/div[2]/div/div[2]/div[2]/div/div/div[2]"));
+		
+		String date = "20";
+		
+		List<WebElement> dateCells = calendar.findElements(By.tagName("div"));
+
+		for (WebElement cell : dateCells) {
+		  if (cell.getText().equals(date)) {
+		    cell.click();
+		    break;
+		  }
+		}
+		
+		Thread.sleep(2000);
+		
+		driver.findElement(By.xpath("//input[@placeholder='+91 01234 56789']")).sendKeys("8508006103");
+		
+		Thread.sleep(1000);
+		
+		WebElement email = driver.findElement(By.xpath("//input[@id='email_id']"));
+		
+		email.sendKeys("mr.a.vinothkumar37@gmail.com");
+		
+		WebElement newPassword = driver.findElement(By.id("new-password"));
+		
+		newPassword.sendKeys("@Vino6673");
+		
+		WebElement conPassword = driver.findElement(By.xpath("//input[@id='c-password']"));
+		
+		conPassword.sendKeys("@Vino6673");
+		
+		driver.findElement(By.id("defaultCheck1")).click();
+	}
+
+}
